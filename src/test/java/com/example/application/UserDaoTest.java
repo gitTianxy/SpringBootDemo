@@ -1,4 +1,4 @@
-package com.example.springbootdemo;
+package com.example.application;
 
 import com.example.dao.UserDao;
 import com.example.domain.User;

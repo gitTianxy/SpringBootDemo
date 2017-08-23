@@ -1,6 +1,5 @@
-package com.example.springbootdemo;
+package com.example.application;
 
-import com.example.bean.Greeting;
 import com.example.bean.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
