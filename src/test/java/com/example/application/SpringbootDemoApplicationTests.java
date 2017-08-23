@@ -16,7 +16,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes=SpringbootDemoApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes=Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SpringbootDemoApplicationTests {
     @LocalServerPort
     private int port;
