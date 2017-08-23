@@ -1,5 +1,9 @@
 package com.example.dao;
 
+import com.example.domain.User;
+
+import java.util.List;
+
 public interface UserDao {
     /**
      * 新增一个用户
@@ -15,7 +19,16 @@ public interface UserDao {
     /**
      * 获取用户总量
      */
-    Integer getAllUsers();
+    int getUserNum();
+
+    /**
+     * get user list
+     * @return
+     */
+    List<User> getAllUsers();
+
+    List<User> getUserByName(String name);
+
     /**
      * 删除所有用户
      */
