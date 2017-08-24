@@ -10,12 +10,18 @@ public interface UserDao {
      * @param name
      * @param age
      */
-    void create(String name, Integer age);
+    User create(String name, Integer age);
+
+    User get(Long id);
+
+    void update(User u);
+
     /**
-     * 根据name删除一个用户高
-     * @param name
+     *
+     * @param id
+     * @return
      */
-    int deleteByName(String name);
+    int delete(Long id);
     /**
      * 获取用户总量
      */

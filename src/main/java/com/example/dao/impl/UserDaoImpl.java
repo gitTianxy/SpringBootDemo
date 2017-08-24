@@ -17,13 +17,21 @@ public class UserDaoImpl implements UserDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void create(String name, Integer age) {
-        jdbcTemplate.update("insert into USER(NAME, AGE) values(?, ?)", name, age);
+    public User create(String name, Integer age) {
+        int count = jdbcTemplate.update("insert into USER(NAME, AGE) values(?, ?)", name, age);
+        if (count < 1) {
+            throw new RuntimeException(String.format("fail save User(%s, %s) to db", name, age));
+        }
+        return getUserByName(name).get(0);
     }
 
     @Override
-    public int deleteByName(String name) {
-        return jdbcTemplate.update("delete from USER where NAME = ?", name);
+    public int delete(Long id) {
+        int count = jdbcTemplate.update("delete from USER where id = ?", id);
+        if (count < 1) {
+            throw new RuntimeException(String.format("delete user failed. id=%s", id));
+        }
+        return count;
     }
 
     @Override
@@ -59,5 +67,19 @@ public class UserDaoImpl implements UserDao {
             u.setAge(rs.getLong("age"));
             return u;
         }
+    }
+
+    @Override
+    public User get(Long id) {
+        String sql = "select * from user where id=?";
+        Long[] params = {id};
+        return jdbcTemplate.query(sql, params, new UserMapper()).get(0);
+    }
+
+    @Override
+    public void update(User u) {
+        String sql = "update user set name=?, age=? where id=?";
+        Object[] params = {u.getName(), u.getAge(), u.getId()};
+        jdbcTemplate.update(sql, params);
     }
 }

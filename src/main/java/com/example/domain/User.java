@@ -1,6 +1,8 @@
 package com.example.domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     Long id;
     String name;
     Long age;
@@ -35,6 +37,10 @@ public class User {
 
     public void setAge(Long age) {
         this.age = age;
+    }
+
+    public boolean equals(User u) {
+        return this.id == u.getId();
     }
 
     @Override
