@@ -17,7 +17,7 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes=Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class restControllerTests {
+public class RestControllerTests {
     @LocalServerPort
     private int port;
 
