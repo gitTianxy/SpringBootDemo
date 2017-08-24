@@ -12,6 +12,12 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class BaseRedisConfig {
+    /**
+     * generally redis stores 'K<String>, V<String>' pairs;
+     * in order to store and restore object, here we overwrite the RedisTemplate bean generation method
+     * @param factory
+     * @return
+     */
     @Bean
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();

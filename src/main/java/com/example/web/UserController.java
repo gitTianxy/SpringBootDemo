@@ -19,7 +19,7 @@ public class UserController {
     public String getUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "/index";
+        return "index";
     }
 
 
