@@ -1,5 +1,6 @@
 package com.example.application;
 
+import com.example.config.RabbitConfig;
 import com.example.message.MsgSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,23 @@ public class RabbitMQTest {
     private MsgSender sender;
 
     @Test
-    public void hello() throws Exception {
-        sender.send("hello");
+    public void testHello() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            sender.send(RabbitConfig.HELLO_QUEUE_ROUTINGKEY, "hello");
+        }
+    }
+
+    @Test
+    public void testTopic() {
+        for (int i = 0; i < 20; i++) {
+            sender.sendTopic(RabbitConfig.TOPIC_EXCHANGE, RabbitConfig.TOPIC_ROUTINGKEY, "topic" + i);
+        }
+    }
+
+    @Test
+    public void testTopics() {
+        for (int i = 0; i < 20; i++) {
+            sender.sendTopics(RabbitConfig.TOPIC_EXCHANGE, "topic." + i, "topic" + i);
+        }
     }
 }
