@@ -34,4 +34,11 @@ public class RabbitMQTest {
             sender.sendTopics(RabbitConfig.TOPIC_EXCHANGE, "topic." + i, "topic" + i);
         }
     }
+
+    @Test
+    public void testFanout() {
+        for (int i = 0; i < 10; i++) {
+            sender.sendFanout(RabbitConfig.FANOUT_EXCHANGE, "fanout_" + i);
+        }
+    }
 }

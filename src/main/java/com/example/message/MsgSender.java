@@ -28,4 +28,9 @@ public class MsgSender {
         logger.info("===Topics sender: exchane={}, rk={}, msg={}", exchange, routineKey, message);
         this.rabbitTemplate.convertAndSend(exchange, routineKey, message);
     }
+
+    public void sendFanout(String exchange, Object message) {
+        logger.info("===Fanout sender: exchange={}, message={}", exchange, message);
+        this.rabbitTemplate.convertAndSend(exchange, null, message);
+    }
 }
