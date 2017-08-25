@@ -2,6 +2,7 @@ package com.example.service;
 
 import com.example.dao.UserDao;
 import com.example.domain.User;
+import com.example.rao.UserRao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -21,11 +22,7 @@ public class UserService {
     private UserDao userDao;
 
     @Autowired
-    private RedisTemplate redisTemplate;
-
-    private final String REDIS_USER_KEY_PREFIX = "springboot_user_";
-    private final Long REDIS_USER_KEY_TIMEOUT = 60l;
-    private final TimeUnit REDIS_USER_KEY_TIMEUNIT = TimeUnit.SECONDS;
+    private UserRao userRao;
 
     /**
      * 新增一个用户
@@ -35,8 +32,7 @@ public class UserService {
      */
     public void create(String name, Integer age) {
         User u = userDao.create(name, age);
-        ValueOperations<String, User> valOpts = redisTemplate.opsForValue();
-        valOpts.set(REDIS_USER_KEY_PREFIX + u.getId(), u, REDIS_USER_KEY_TIMEOUT, REDIS_USER_KEY_TIMEUNIT);
+        userRao.add(u);
     }
 
     /**
@@ -49,8 +45,8 @@ public class UserService {
         List<User> users = userDao.getUserByName(name);
         for (User u : users) {
             userDao.delete(u.getId());
-            if (redisTemplate.hasKey(REDIS_USER_KEY_PREFIX + u.getId())) {
-                redisTemplate.delete(REDIS_USER_KEY_PREFIX + u.getId());
+            if (userRao.exists(u.getId())) {
+                userRao.delete(u.getId());
             }
             delCount++;
         }
@@ -61,12 +57,11 @@ public class UserService {
      * 获取用户总量
      */
     public int getUserNum() {
-        Set<String> keys = redisTemplate.keys(REDIS_USER_KEY_PREFIX + "*");
-        if (!keys.isEmpty()) {
-            return keys.size();
-        } else {
-            return userDao.getUserNum();
+        int num = userRao.count();
+        if (num == 0) {
+            num = userDao.getUserNum();
         }
+        return num;
     }
 
     /**
@@ -75,14 +70,8 @@ public class UserService {
      * @return
      */
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<User>();
-        Set<String> keys = redisTemplate.keys(REDIS_USER_KEY_PREFIX + "*");
-        if (!keys.isEmpty()) {
-            ValueOperations<String, User> valOpts = redisTemplate.opsForValue();
-            for (String k : keys) {
-                users.add(valOpts.get(k));
-            }
-        } else {
+        List<User> users = userRao.getAll();
+        if (users.isEmpty()) {
             users.addAll(userDao.getAllUsers());
         }
         return users;
@@ -94,25 +83,22 @@ public class UserService {
 
     public void deleteAll() {
         userDao.deleteAllUsers();
-        Set<String> keys = redisTemplate.keys(REDIS_USER_KEY_PREFIX + "*");
-        if (!keys.isEmpty()) {
-            for (String k : keys) {
-                redisTemplate.delete(k);
-            }
-        }
+        userRao.deleteAll();
     }
 
     public User getById(Long id) {
-        if (redisTemplate.hasKey(REDIS_USER_KEY_PREFIX + id)) {
-            ValueOperations<String, User> valOpts = redisTemplate.opsForValue();
-            return valOpts.get(REDIS_USER_KEY_PREFIX + id);
+        User u = userRao.get(id);
+        if (u == null) {
+            u = userDao.get(id);
+            if (u != null) {
+                userRao.add(u);
+            }
         }
-        return userDao.get(id);
+        return u;
     }
 
     public void update(User u) {
         userDao.update(u);
-        ValueOperations<String, User> valOpts = redisTemplate.opsForValue();
-        valOpts.set(REDIS_USER_KEY_PREFIX + u.getId(), u, REDIS_USER_KEY_TIMEOUT, REDIS_USER_KEY_TIMEUNIT);
+        userRao.update(u);
     }
 }
