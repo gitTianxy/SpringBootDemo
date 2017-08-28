@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.example.*")
 @EnableMongoRepositories(basePackages = {"com.example.*"})
+@EnableScheduling
 public class Application extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

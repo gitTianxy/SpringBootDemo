@@ -4,14 +4,9 @@ import com.example.dao.UserDao;
 import com.example.domain.User;
 import com.example.rao.UserRao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * use mysql and redis as data-source
