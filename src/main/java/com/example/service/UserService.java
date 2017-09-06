@@ -25,9 +25,10 @@ public class UserService {
      * @param name
      * @param age
      */
-    public void create(String name, Integer age) {
+    public User create(String name, Integer age) {
         User u = userDao.create(name, age);
         userRao.add(u);
+        return u;
     }
 
     /**

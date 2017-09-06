@@ -11,7 +11,7 @@ import java.util.Date;
 public class TimeReporter {
     private final static Logger logger = LoggerFactory.getLogger(TimeReporter.class);
 
-    @Scheduled(initialDelay = 5000, fixedRate = 5000)
+    @Scheduled(initialDelay = 5000, fixedRate = 60000)
     public void reportTime() {
         logger.info("!!! current time is: " + new Date());
     }
