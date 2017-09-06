@@ -1,6 +1,6 @@
 package com.example.message;
 
-import com.example.config.RabbitConfig;
+import com.example.base.config.RabbitConfig;
 import com.example.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

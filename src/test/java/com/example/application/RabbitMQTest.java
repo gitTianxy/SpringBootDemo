@@ -1,6 +1,6 @@
 package com.example.application;
 
-import com.example.config.RabbitConfig;
+import com.example.base.config.RabbitConfig;
 import com.example.message.MsgSender;
 import org.junit.Test;
 import org.junit.runner.RunWith;

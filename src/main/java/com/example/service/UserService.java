@@ -32,6 +32,20 @@ public class UserService {
     }
 
     /**
+     * 新增一个用户
+     *
+     * @param name
+     * @param age
+     * @param passwd
+     * @return
+     */
+    public User create(String name, Integer age, String passwd) {
+        User u = userDao.create(name, age, passwd);
+        userRao.add(u);
+        return u;
+    }
+
+    /**
      * 根据name删除一个用户
      *
      * @param name

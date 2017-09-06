@@ -1,6 +1,5 @@
 package com.example.message;
 
-import com.example.config.RabbitConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;

@@ -26,6 +26,15 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User create(String name, Integer age, String passwd) {
+        int count = jdbcTemplate.update("insert into USER(name, age, passwd) values(?, ?, ?)", name, age, passwd);
+        if (count < 1) {
+            throw new RuntimeException(String.format("fail save User(%s, %s, %s) to db", name, age, passwd));
+        }
+        return getUserByName(name).get(0);
+    }
+
+    @Override
     public int delete(Long id) {
         int count = jdbcTemplate.update("delete from USER where id = ?", id);
         if (count < 1) {
@@ -57,18 +66,6 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate.update("delete from USER");
     }
 
-    class UserMapper implements RowMapper<User> {
-
-        @Override
-        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            User u = new User();
-            u.setId(rs.getLong("id"));
-            u.setName(rs.getString("name"));
-            u.setAge(rs.getLong("age"));
-            return u;
-        }
-    }
-
     @Override
     public User get(Long id) {
         String sql = "select * from user where id=?";
@@ -78,8 +75,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User u) {
-        String sql = "update user set name=?, age=? where id=?";
-        Object[] params = {u.getName(), u.getAge(), u.getId()};
+        String sql = "update user set name=?, age=?, passwd=? where id=?";
+        Object[] params = {u.getName(), u.getAge(), u.getPasswd(), u.getId()};
         jdbcTemplate.update(sql, params);
+    }
+
+    class UserMapper implements RowMapper<User> {
+
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User u = new User();
+            u.setId(rs.getLong("id"));
+            u.setName(rs.getString("name"));
+            u.setAge(rs.getLong("age"));
+            u.setPasswd(rs.getString("passwd"));
+            return u;
+        }
     }
 }

@@ -12,6 +12,8 @@ public interface UserDao {
      */
     User create(String name, Integer age);
 
+    User create(String name, Integer age, String passwd);
+
     User get(Long id);
 
     void update(User u);

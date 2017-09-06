@@ -1,7 +1,10 @@
 package com.example.web;
 
+import com.example.common.JsonException;
 import com.example.domain.User;
 import com.example.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,27 +17,29 @@ import java.util.List;
 
 @Controller
 public class UserController {
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     UserService userService;
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
-    public String getUsers(Model model) {
+    public String getUsers(String name, Model model) throws Exception {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "index";
     }
 
     @RequestMapping(value = "/user/{name}", method = RequestMethod.POST)
-    public ResponseEntity post(@PathVariable("name") String name, @RequestParam("age") Integer age) {
+    public ResponseEntity post(@PathVariable("name") String name, @RequestParam("age") Integer age, @RequestParam("passwd") String passwd) {
         List<User> users = userService.getUserByName(name);
         if (users.isEmpty()) {
-            User newUser = userService.create(name, age);
+            User newUser = userService.create(name, age, passwd);
             return new ResponseEntity(newUser, HttpStatus.OK);
         } else {
             int count = 0;
             for(User u: users) {
                 u.setName(name);
                 u.setAge(Long.valueOf(age));
+                u.setPasswd(passwd);
                 userService.update(u);
                 count++;
             }
@@ -46,7 +51,8 @@ public class UserController {
     public @ResponseBody User put(HttpServletRequest request) {
         String name = request.getParameter("name");
         String age = request.getParameter("age");
-        return userService.create(name, Integer.valueOf(age));
+        String passwd = request.getParameter("passwd");
+        return userService.create(name, Integer.valueOf(age), passwd);
     }
 
     @RequestMapping(value = "/user/{name}", method = RequestMethod.DELETE)

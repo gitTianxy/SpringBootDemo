@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.base.config;
 
 import com.mongodb.MongoURI;
 import org.springframework.beans.factory.annotation.Value;

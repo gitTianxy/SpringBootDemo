@@ -6,6 +6,7 @@ public class User implements Serializable {
     Long id;
     String name;
     Long age;
+    String passwd;
 
     public User() {
     }
@@ -13,6 +14,12 @@ public class User implements Serializable {
     public User(String name, Long age) {
         this.name = name;
         this.age = age;
+    }
+
+    public User(String name, Long age, String passwd) {
+        this.name = name;
+        this.age = age;
+        this.passwd = passwd;
     }
 
     public Long getId() {
@@ -43,12 +50,21 @@ public class User implements Serializable {
         return this.id == u.getId();
     }
 
+    public String getPasswd() {
+        return passwd;
+    }
+
+    public void setPasswd(String passwd) {
+        this.passwd = passwd;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", passwd='" + passwd + '\'' +
                 '}';
     }
 }
