@@ -5,7 +5,10 @@ import com.example.common.ErrorInfo;
 import com.example.common.JsonException;
 import com.example.common.ResultConstant;
 import org.apache.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,6 +19,8 @@ import java.io.IOException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    private final static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(value = Exception.class)
     public String defaultErrorHandler(HttpServletRequest request, Exception e) throws Exception {
         request.setAttribute("url", request.getRequestURL());
@@ -32,6 +37,13 @@ public class GlobalExceptionHandler {
         error.setData("Some Data");
         error.setUrl(req.getRequestURL().toString());
         return error;
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public void handleMissingParams(MissingServletRequestParameterException ex) {
+        String name = ex.getParameterName();
+        System.out.println(name + " parameter is missing");
+        logger.info(name + " parameter is missing");
     }
 
     public void writeUnauthorizedError(HttpServletResponse response) throws IOException {
