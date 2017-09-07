@@ -14,4 +14,5 @@ public class ResultConstant {
     public static final WrongResultBean NOT_FOUND_RESULT = new WrongResultBean(HttpStatus.SC_NOT_FOUND, "not found");
     public static final WrongResultBean UNPROCESSABLE_RESULT = new WrongResultBean(HttpStatus.SC_UNPROCESSABLE_ENTITY, "unprocessable entity");
     public static final WrongResultBean UNAUTHORIZED_RESULT = new WrongResultBean(HttpStatus.SC_UNAUTHORIZED, "unauthorized");
+    public static final WrongResultBean MISSINGPARAMS_RESULT = new WrongResultBean(HttpStatus.SC_BAD_REQUEST, "missing params");
 }

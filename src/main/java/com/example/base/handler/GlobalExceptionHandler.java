@@ -40,10 +40,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public void handleMissingParams(MissingServletRequestParameterException ex) {
+    public void handleMissingParams(MissingServletRequestParameterException ex, HttpServletResponse response) throws
+            Exception {
         String name = ex.getParameterName();
-        System.out.println(name + " parameter is missing");
         logger.info(name + " parameter is missing");
+        writeMissingParamsError(response);
     }
 
     public void writeUnauthorizedError(HttpServletResponse response) throws IOException {
@@ -55,6 +56,12 @@ public class GlobalExceptionHandler {
     public void writeInternalServerError(HttpServletResponse response) throws IOException {
         response.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         response.getWriter().write(JsonUtil.getJsonFromObject(ResultConstant.SYS_ERR_RESULT));
+        response.getWriter().close();
+    }
+
+    public void writeMissingParamsError(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpStatus.SC_BAD_REQUEST);
+        response.getWriter().write(JsonUtil.getJsonFromObject(ResultConstant.MISSINGPARAMS_RESULT));
         response.getWriter().close();
     }
 }
