@@ -20,6 +20,6 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login", "/error/**");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login", "/error/**", "/hello");
     }
 }

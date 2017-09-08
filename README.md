@@ -46,3 +46,13 @@ management:
     mail:  
       enabled: false  
 ```
+
+### [Logging](http://javabeat.net/spring-boot-logging/)
+* default logger
+    - By default, If you use the ‘Starter POMs’, Logback will be used for logging. Appropriate Logback routing is also
+included to ensure that dependent libraries that use Java Util Logging, Commons Logging, Log4J or SLF4J will all work correctly.
+
+* [configure default logger](http://blog.didispace.com/springbootlog/)
+
+
+### [Spring Security](http://www.jianshu.com/p/08cc28921fd0)
