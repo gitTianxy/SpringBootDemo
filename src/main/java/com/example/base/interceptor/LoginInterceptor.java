@@ -25,13 +25,15 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
             Exception {
-        String loginName = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie ck : cookies) {
-                if ("name".equals(ck.getName())) {
-                    loginName = ck.getValue();
-                    break;
+        String loginName = request.getRemoteUser();
+        if (loginName == null) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie ck : cookies) {
+                    if ("name".equals(ck.getName())) {
+                        loginName = ck.getValue();
+                        break;
+                    }
                 }
             }
         }

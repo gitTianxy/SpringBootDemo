@@ -1,6 +1,5 @@
 package com.example.web;
 
-import com.example.common.JsonException;
 import com.example.domain.User;
 import com.example.service.UserService;
 import org.slf4j.Logger;
@@ -22,10 +21,10 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
-    public String getUsers(String name, Model model) throws Exception {
+    public String getUsers(Model model) throws Exception {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "index";
+        return "user-list";
     }
 
     @RequestMapping(value = "/user/{name}", method = RequestMethod.POST)

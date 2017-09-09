@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html>
+<head>
+    <title>index</title>
+</head>
 <body>
-<#list users as u>
-
-id: ${u.id}<br>
-name: ${u.name}<br>
-age: ${u.age}<br>
-
-</#list>
+<h1>欢迎来到Spring Boot Demo</h1>
+<p>点击 <a href="/hello">这里</a> 打个招呼吧</p>
 </body>
-
 </html>
