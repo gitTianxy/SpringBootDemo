@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.message;
 
 import com.example.base.config.RabbitConfig;
 import com.example.message.MsgSender;

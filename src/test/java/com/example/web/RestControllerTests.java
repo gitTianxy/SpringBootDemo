@@ -1,5 +1,6 @@
-package com.example.application;
+package com.example.web;
 
+import com.example.application.Application;
 import com.example.bean.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;

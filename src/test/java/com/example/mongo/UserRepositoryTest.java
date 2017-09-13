@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.mongo;
 
 import com.example.mongo.document.MUser;
 import com.example.mongo.repository.UserRepository;

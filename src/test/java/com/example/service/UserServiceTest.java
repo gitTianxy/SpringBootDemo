@@ -1,5 +1,6 @@
-package com.example.application;
+package com.example.service;
 
+import com.example.application.Application;
 import com.example.domain.User;
 import com.example.service.UserService;
 import org.junit.Assert;

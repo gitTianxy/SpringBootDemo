@@ -1,4 +1,4 @@
-package com.example.application;
+package com.example.dao;
 
 import com.example.mongo.dao.UserMDao;
 import com.example.mongo.document.MUser;
