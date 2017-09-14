@@ -21,6 +21,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @PreAuthorize("hasPermission('ALL', 'READ')")
     @RequestMapping(value = "/user/list", method = RequestMethod.GET)
     public String getUsers(Model model) throws Exception {
         List<User> users = userService.getAllUsers();
@@ -28,7 +29,7 @@ public class UserController {
         return "user-list";
     }
 
-    @PreAuthorize("hasPermission('ALL', 'READ')")
+    @PreAuthorize("hasPermission('ALL', 'WRITE')")
     @RequestMapping(value = "/user/{name}", method = RequestMethod.POST)
     public ResponseEntity post(@PathVariable("name") String name, @RequestParam("age") Integer age, @RequestParam("passwd") String passwd) {
         User u = userService.getUserByName(name);

@@ -63,9 +63,7 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
      */
     @Override
     public boolean hasPermission(Authentication authentication, Object target, Object permission) {
-//        String username = authentication.getName();
-//        User u = userService.getUserByName(username);
-        logger.info("login:{}, target:{}, permission:{}", authentication.getPrincipal(), target, permission);
+        logger.info("login:{}, target:{}, permission:{}", authentication.getName(), target, permission);
 
         Map<String, String> allowedPermissions = new HashMap<>();
         Collection<GrantedAuthority> roles = (Collection<GrantedAuthority>) authentication.getAuthorities();
