@@ -12,10 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by kevintian on 2017/9/6.
@@ -46,5 +49,11 @@ public class LoginController {
         cookie.setMaxAge(1000); // expire in 1000 secs;
         response.addCookie(cookie);
         return new ResponseEntity("login succ.", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView getLoginPage(@RequestParam Optional<String> error) {
+        logger.debug("Getting login page, error={}", error);
+        return new ModelAndView("login", "error", error);
     }
 }
