@@ -1,8 +1,8 @@
 package com.example.service;
 
 import com.example.application.Application;
-import com.example.domain.User;
-import com.example.service.UserService;
+import com.example.base.domain.User;
+import com.example.base.service.UserService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,15 +39,13 @@ public class UserServiceTest {
         int delCount = userService.deleteByName("a");
         delCount += userService.deleteByName("e");
         // update
-        List<User> dlist = userService.getUserByName("c");
-        for (User u : dlist) {
-            u.setName(u.getName() + "_NEW");
-            userService.update(u);
-        }
+        User u = userService.getUserByName("c");
+        u.setName(u.getName() + "_NEW");
+        userService.update(u);
         // list users
         List<User> users = userService.getAllUsers();
-        for (User u : users) {
-            System.out.println(u);
+        for (User user : users) {
+            System.out.println(user);
         }
     }
 }

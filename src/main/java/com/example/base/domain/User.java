@@ -1,22 +1,29 @@
-package com.example.domain;
+package com.example.base.domain;
 
-import java.io.Serializable;
+import javax.persistence.*;
+import java.util.Arrays;
 
-public class User implements Serializable {
+@Entity
+@Table(name = "user")
+public class User {
+    @Id
+    @GeneratedValue
     Long id;
+    @Column(unique = true)
     String name;
-    Long age;
+    Integer age;
     String passwd;
+    String roles;
 
     public User() {
     }
 
-    public User(String name, Long age) {
+    public User(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
 
-    public User(String name, Long age, String passwd) {
+    public User(String name, Integer age, String passwd) {
         this.name = name;
         this.age = age;
         this.passwd = passwd;
@@ -38,11 +45,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Long getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(Long age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -58,6 +65,22 @@ public class User implements Serializable {
         this.passwd = passwd;
     }
 
+    public String[] getRoles() {
+        if (roles==null) {
+            return new String[0];
+        } else {
+            return roles.split(",");
+        }
+    }
+
+    public void setRoles(String[] roles) {
+        this.roles = Arrays.toString(roles);
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -65,6 +88,7 @@ public class User implements Serializable {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", passwd='" + passwd + '\'' +
+                ", roles=\'" + roles +
                 '}';
     }
 }

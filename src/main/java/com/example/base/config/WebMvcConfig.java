@@ -3,14 +3,15 @@ package com.example.base.config;
 import com.example.base.interceptor.LoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
-    @Autowired
-    LoginInterceptor loginInterceptor;
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
+//    @Autowired
+//    LoginInterceptor loginInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -18,8 +19,9 @@ public class MyWebAppConfigurer extends WebMvcConfigurerAdapter {
         super.addResourceHandlers(registry);
     }
 
-    @Override
+   /* @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/login", "/error/**", "/hello", "/");
-    }
+        super.addInterceptors(registry);
+        registry.addInterceptor(loginInterceptor).addPathPatterns("*//**").excludePathPatterns("/login", "/error*//**", "/hello", "/");
+    }*/
 }

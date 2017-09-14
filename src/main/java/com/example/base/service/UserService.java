@@ -1,17 +1,18 @@
-package com.example.service;
+package com.example.base.service;
 
-import com.example.dao.UserDao;
-import com.example.domain.User;
+import com.example.base.dao.UserDao;
+import com.example.base.domain.User;
 import com.example.rao.UserRao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * use mysql and redis as data-source
  */
-@Component
+@Service
 public class UserService {
     @Autowired
     private UserDao userDao;
@@ -26,7 +27,11 @@ public class UserService {
      * @param age
      */
     public User create(String name, Integer age) {
-        User u = userDao.create(name, age);
+        User u = userDao.getByName(name);
+        if (u == null) {
+            u = new User(name, age);
+        }
+        u = userDao.save(u);
         userRao.add(u);
         return u;
     }
@@ -40,7 +45,11 @@ public class UserService {
      * @return
      */
     public User create(String name, Integer age, String passwd) {
-        User u = userDao.create(name, age, passwd);
+        User u = userDao.getByName(name);
+        if (u == null) {
+            u = new User(name, age, passwd);
+        }
+        u = userDao.save(u);
         userRao.add(u);
         return u;
     }
@@ -52,8 +61,9 @@ public class UserService {
      */
     public int deleteByName(String name) {
         int delCount = 0;
-        List<User> users = userDao.getUserByName(name);
-        for (User u : users) {
+
+        User u = userDao.getByName(name);
+        if (u != null) {
             userDao.delete(u.getId());
             if (userRao.exists(u.getId())) {
                 userRao.delete(u.getId());
@@ -69,7 +79,7 @@ public class UserService {
     public int getUserNum() {
         int num = userRao.count();
         if (num == 0) {
-            num = userDao.getUserNum();
+            num = (int) userDao.count();
         }
         return num;
     }
@@ -82,24 +92,24 @@ public class UserService {
     public List<User> getAllUsers() {
         List<User> users = userRao.getAll();
         if (users.isEmpty()) {
-            users.addAll(userDao.getAllUsers());
+            users.addAll(userDao.findAll());
         }
         return users;
     }
 
-    public List<User> getUserByName(String name) {
-        return userDao.getUserByName(name);
+    public User getUserByName(String name) {
+        return userDao.getByName(name);
     }
 
     public void deleteAll() {
-        userDao.deleteAllUsers();
+        userDao.deleteAll();
         userRao.deleteAll();
     }
 
     public User getById(Long id) {
         User u = userRao.get(id);
         if (u == null) {
-            u = userDao.get(id);
+            u = userDao.findOne(id);
             if (u != null) {
                 userRao.add(u);
             }
@@ -108,7 +118,7 @@ public class UserService {
     }
 
     public void update(User u) {
-        userDao.update(u);
+        userDao.save(u);
         userRao.update(u);
     }
 }

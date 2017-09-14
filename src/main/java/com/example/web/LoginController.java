@@ -1,7 +1,7 @@
 package com.example.web;
 
-import com.example.domain.User;
-import com.example.service.UserService;
+import com.example.base.domain.User;
+import com.example.base.service.UserService;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +34,11 @@ public class LoginController {
         if (!nameCk.equals("default") && nameCk.equals(name)) {
             return new ResponseEntity("already login", HttpStatus.OK);
         }
-        List<User> users = userService.getUserByName(name);
-        if (users.isEmpty()) {
+        User u = userService.getUserByName(name);
+        if (u == null) {
             return new ResponseEntity(String.format("login fail. user(%s,%s) does not exist", name, passwd),
                     HttpStatus.NOT_FOUND);
         }
-        User u = users.get(0);
         if (!u.getPasswd().equals(passwd)) {
             return new ResponseEntity("login fail. name or passwd error", HttpStatus.BAD_REQUEST);
         }

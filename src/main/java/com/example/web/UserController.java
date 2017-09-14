@@ -1,12 +1,13 @@
 package com.example.web;
 
-import com.example.domain.User;
-import com.example.service.UserService;
+import com.example.base.domain.User;
+import com.example.base.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,21 +28,19 @@ public class UserController {
         return "user-list";
     }
 
+    @PreAuthorize("hasPermission('ALL', 'READ')")
     @RequestMapping(value = "/user/{name}", method = RequestMethod.POST)
     public ResponseEntity post(@PathVariable("name") String name, @RequestParam("age") Integer age, @RequestParam("passwd") String passwd) {
-        List<User> users = userService.getUserByName(name);
-        if (users.isEmpty()) {
+        User u = userService.getUserByName(name);
+        if (u == null) {
             User newUser = userService.create(name, age, passwd);
             return new ResponseEntity(newUser, HttpStatus.OK);
         } else {
             int count = 0;
-            for(User u: users) {
-                u.setName(name);
-                u.setAge(Long.valueOf(age));
-                u.setPasswd(passwd);
-                userService.update(u);
-                count++;
-            }
+            u.setName(name);
+            u.setAge(age);
+            u.setPasswd(passwd);
+            userService.update(u);
             return new ResponseEntity(String.format("%s users updated", count), HttpStatus.OK);
         }
     }

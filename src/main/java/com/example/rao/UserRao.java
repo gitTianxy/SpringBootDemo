@@ -1,6 +1,6 @@
 package com.example.rao;
 
-import com.example.domain.User;
+import com.example.base.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
