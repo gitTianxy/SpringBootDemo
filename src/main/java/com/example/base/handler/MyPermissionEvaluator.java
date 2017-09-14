@@ -10,9 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class MyPermissionEvaluator implements PermissionEvaluator {
@@ -33,22 +31,22 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
         HELLO, SELF, ALL
     }
 
-    static Map<String, Map<String, String>> rolePermissionMap = new HashMap<>();
+    static Map<String, List<String>> rolePermissionMap = new HashMap<>();
     {
-        Map<String, String> visitorMap = new HashMap<>();
-        visitorMap.put(Target.HELLO.toString(), Permission.READ.toString());
+        List<String> visitorMap = new ArrayList<>();
+        visitorMap.add(Target.HELLO.toString() + ":" + Permission.READ.toString());
         rolePermissionMap.put(Role.VISITOR.toString(), visitorMap);
-        Map<String, String> userMap = new HashMap<>();
-        userMap.put(Target.HELLO.toString(), Permission.READ.toString());
-        userMap.put(Target.SELF.toString(), Permission.READ.toString());
-        userMap.put(Target.SELF.toString(), Permission.WRITE.toString());
+        List<String> userMap = new ArrayList<>();
+        userMap.add(Target.HELLO.toString() + ":" + Permission.READ.toString());
+        userMap.add(Target.SELF.toString() + ":" + Permission.READ.toString());
+        userMap.add(Target.SELF.toString() + ":" + Permission.WRITE.toString());
         rolePermissionMap.put(Role.USER.toString(), userMap);
-        Map<String, String> adminMap = new HashMap<>();
-        adminMap.put(Target.HELLO.toString(), Permission.READ.toString());
-        adminMap.put(Target.SELF.toString(), Permission.READ.toString());
-        adminMap.put(Target.SELF.toString(), Permission.WRITE.toString());
-        adminMap.put(Target.ALL.toString(), Permission.READ.toString());
-        adminMap.put(Target.ALL.toString(), Permission.WRITE.toString());
+        List<String> adminMap = new ArrayList<>();
+        adminMap.add(Target.HELLO.toString() + ":" + Permission.READ.toString());
+        adminMap.add(Target.SELF.toString() + ":" + Permission.READ.toString());
+        adminMap.add(Target.SELF.toString() + ":" + Permission.WRITE.toString());
+        adminMap.add(Target.ALL.toString() + ":" + Permission.READ.toString());
+        adminMap.add(Target.ALL.toString() + ":" + Permission.WRITE.toString());
         rolePermissionMap.put(Role.ADMIN.toString(), adminMap);
     }
 
@@ -65,12 +63,12 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
     public boolean hasPermission(Authentication authentication, Object target, Object permission) {
         logger.info("login:{}, target:{}, permission:{}", authentication.getName(), target, permission);
 
-        Map<String, String> allowedPermissions = new HashMap<>();
+        Set<String> allowedPermissions = new HashSet<>();
         Collection<GrantedAuthority> roles = (Collection<GrantedAuthority>) authentication.getAuthorities();
         for(GrantedAuthority role : roles) {
-            allowedPermissions.putAll(rolePermissionMap.get(role.getAuthority()));
+            allowedPermissions.addAll(rolePermissionMap.get(role.getAuthority()));
         }
-        if (allowedPermissions.get(permission) == null) {
+        if (allowedPermissions.contains(permission.toString())) {
             return false;
         } else {
             return true;

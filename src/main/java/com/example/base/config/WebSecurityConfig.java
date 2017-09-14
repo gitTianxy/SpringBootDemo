@@ -15,8 +15,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/login", "/error*", "/hello", "/").permitAll()
-                .antMatchers("/monitor**").access("hasRole('ROLE_ADMIN')");
-        super.configure(http);
+                .antMatchers("/monitor**").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic();
     }
 
 }
