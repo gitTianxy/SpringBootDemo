@@ -1,15 +1,14 @@
 package com.example.base.handler;
 
+import com.example.base.bo.MyUserDetail;
 import com.example.base.domain.User;
 import com.example.base.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,12 +39,4 @@ public class MyUserDetailService implements UserDetailsService {
         return login;
     }
 
-    class MyUserDetail extends org.springframework.security.core.userdetails.User {
-        private User user;
-
-        public MyUserDetail(User user) {
-            super(user.getName(), user.getPasswd(), AuthorityUtils.createAuthorityList(user.getRoles()));
-            this.user = user;
-        }
-    }
 }

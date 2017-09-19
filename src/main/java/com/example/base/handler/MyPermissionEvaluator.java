@@ -15,23 +15,10 @@ import java.util.*;
 @Component
 public class MyPermissionEvaluator implements PermissionEvaluator {
     private final static Logger logger = LoggerFactory.getLogger(MyPermissionEvaluator.class);
-
+    static Map<String, List<String>> rolePermissionMap = new HashMap<>();
     @Autowired
     UserService userService;
 
-    enum Role {
-        VISITOR, USER, ADMIN
-    }
-
-    enum Permission {
-        READ, WRITE
-    }
-
-    enum Target {
-        HELLO, SELF, ALL
-    }
-
-    static Map<String, List<String>> rolePermissionMap = new HashMap<>();
     {
         List<String> visitorMap = new ArrayList<>();
         visitorMap.add(Target.HELLO.toString() + ":" + Permission.READ.toString());
@@ -50,13 +37,12 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
         rolePermissionMap.put(Role.ADMIN.toString(), adminMap);
     }
 
-
     /**
      * permission check
      *
      * @param authentication: loginer, wrapped by spring-security
-     * @param target: permission target
-     * @param permission: action that loginer perform on the target
+     * @param target:         permission target
+     * @param permission:     action that loginer perform on the target
      * @return
      */
     @Override
@@ -65,18 +51,32 @@ public class MyPermissionEvaluator implements PermissionEvaluator {
 
         Set<String> allowedPermissions = new HashSet<>();
         Collection<GrantedAuthority> roles = (Collection<GrantedAuthority>) authentication.getAuthorities();
-        for(GrantedAuthority role : roles) {
+        for (GrantedAuthority role : roles) {
             allowedPermissions.addAll(rolePermissionMap.get(role.getAuthority()));
         }
-        if (allowedPermissions.contains(permission.toString())) {
-            return false;
-        } else {
+        if (allowedPermissions.contains(String.format("%s:%s", target, permission))) {
             return true;
+        } else {
+            return false;
         }
     }
 
     @Override
-    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object
+            permission) {
         return false;
+    }
+
+    enum Role {
+        VISITOR, USER, ADMIN
+    }
+
+
+    enum Permission {
+        READ, WRITE
+    }
+
+    enum Target {
+        HELLO, SELF, ALL
     }
 }
