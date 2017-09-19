@@ -16,8 +16,8 @@ import javax.servlet.http.HttpServletResponse;
  * Created by kevintian on 2017/9/6.
  */
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
-    private final static Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+public class ValidationInterceptor implements HandlerInterceptor {
+    private final static Logger logger = LoggerFactory.getLogger(ValidationInterceptor.class);
 
     @Autowired
     GlobalExceptionHandler exceptionHandler;
@@ -25,23 +25,12 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws
             Exception {
-        String loginName = request.getRemoteUser();
-        if (loginName == null) {
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie ck : cookies) {
-                    if ("name".equals(ck.getName())) {
-                        loginName = ck.getValue();
-                        break;
-                    }
-                }
-            }
-        }
-        if (loginName == null) {
+        if (false) {
             exceptionHandler.writeUnauthorizedError(response);
-            logger.info("not login. request: {}", request.getRequestURL());
+            logger.info("validation before method--FAIL. request: {}", request.getRequestURL());
             return false;
         } else {
+            logger.info("validation before method--SUCC.");
             return true;
         }
     }
@@ -49,11 +38,13 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView
             modelAndView) throws Exception {
+        logger.info("validation after method...");
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception
             ex) throws Exception {
+        logger.info("Actions after validation...");
     }
 
 }
