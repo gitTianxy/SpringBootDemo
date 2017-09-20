@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                     .rememberMe();
+        http.csrf().ignoringAntMatchers("/rest/**");
     }
 
     @Override
