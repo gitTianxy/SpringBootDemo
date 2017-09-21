@@ -18,8 +18,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/login", "/error*", "/hello", "/").permitAll()
-                .antMatchers("/monitor**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/login", "/error*", "/hello", "/rest/jpa_entity/**", "/").permitAll()
+                .antMatchers("/monitor**").access("hasRole('ADMIN')")
                 .anyRequest().fullyAuthenticated()
                 .and()
                     .formLogin()
@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                     .rememberMe();
-        http.csrf().ignoringAntMatchers("/rest/**");
+        http.csrf().ignoringAntMatchers("/rest/jpa_entity/**");
     }
 
     @Override
