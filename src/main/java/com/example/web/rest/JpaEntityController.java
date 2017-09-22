@@ -69,7 +69,12 @@ public class JpaEntityController {
     @ApiOperation(value = "删除实体", notes = "删除指定ID的实体")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
-        jpaEntityService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        try {
+            jpaEntityService.delete(id);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("delete entity fail. id={}, exception:{}", id, e);
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.domain;
 
+import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "jpa_entity")
+@Data
 public class JpaEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,46 +35,6 @@ public class JpaEntity implements Serializable {
     public JpaEntity(String fieldA, String fieldB) {
         this.fieldA = fieldA;
         this.fieldB = fieldB;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFieldA() {
-        return fieldA;
-    }
-
-    public void setFieldA(String fieldA) {
-        this.fieldA = fieldA;
-    }
-
-    public String getFieldB() {
-        return fieldB;
-    }
-
-    public void setFieldB(String fieldB) {
-        this.fieldB = fieldB;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     @Override
