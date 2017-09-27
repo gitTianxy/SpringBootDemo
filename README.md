@@ -2,11 +2,20 @@
 
 ---
 ### CONTENT
+0. start requirements
 I. project structure / core components of Spring Boot project
 II. building blocks of Spring Boot
 III. main applications of Spring Boot
 
 ---
+### 0. start requirement
+* mongodb
+* redis
+* rabbitmq
+* mysql
+    - table: user, init account
+    - table: jpa_entity
+
 ## II. building blocks of Spring Boot
 
 ### [Actuator -- build-in health indicator of Spring Boot](http://javabeat.net/spring-boot-actuator/)
