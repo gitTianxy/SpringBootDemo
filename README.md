@@ -1,11 +1,11 @@
 # SpringBootDemo
 
 ---
-### CONTENT
+### OUTLINE
 0. start requirements
-I. project structure / core components of Spring Boot project
-II. building blocks of Spring Boot
-III. main applications of Spring Boot
+1. project structure / core components of Spring Boot project
+2. building blocks of Spring Boot
+3. main applications of Spring Boot
 
 ---
 ### 0. start requirement
